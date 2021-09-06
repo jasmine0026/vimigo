@@ -7,3 +7,7 @@
 #displaytable td{
   text-align: left;
 }
+
+.mdl-button mdl-js-button mdl-button--icon{
+  display:inline-block;
+}
