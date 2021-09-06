@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title>Vimigo App</title>
+
+    <link href="https://fonts.googleapis.com/css?family=Dosis:400,700" rel="stylesheet" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    <link rel="stylesheet" href="https://code.getmdl.io/1.3.0/material.indigo-pink.min.css">
+    <link rel="stylesheet"  href="style.css">
+    <script defer src="https://code.getmdl.io/1.3.0/material.min.js"></script>
+  </head>
+
+  <body>
+    <div class="mdl-layout mdl-js-layout mdl-layout--fixed-header
+            mdl-layout--fixed-tabs">
+  <header class="mdl-layout__header">
+    <div class="mdl-layout__header-row">
+      <!-- Title -->
+      <span class="mdl-layout-title">Welcome to Vimigo</span>
+    </div>
+    <!-- Tabs -->
+    <div class="mdl-layout__tab-bar mdl-js-ripple-effect">
+      <a href="#fixed-tab-1" class="mdl-layout__tab is-active">CREATE</a>
+      <a href="#fixed-tab-2" class="mdl-layout__tab">READ</a>
+      <a href="#fixed-tab-3" class="mdl-layout__tab">UPDATE</a>
+      <a href="#fixed-tab-3" class="mdl-layout__tab">DELETE</a>
+    </div>
+  </header>
+  <main class="mdl-layout__content">
+    <section class="mdl-layout__tab-panel is-active" id="fixed-tab-1">
+      <div class="page-content">
+        <form action="#">
+          <span class="mdl-layout-title">Name</span>
+          <div class="mdl-textfield mdl-js-textfield">
+            <input class="mdl-textfield__input" type="text" id="name">
+          </div>
+        </form>
+        <form action="#">
+          <span class="mdl-layout-title">Email</span>
+          <div class="mdl-textfield mdl-js-textfield">
+            <input class="mdl-textfield__input" type="text" id="email">
+          </div>
+        </form>
+        <div>
+          <span class="mdl-layout-title">Gender</span><br>
+          <label class="mdl-radio mdl-js-radio mdl-js-ripple-effect" for="male-opt" style="margin:10px 30px 10px 0">
+            <input type="radio" id="male-opt" class="mdl-radio__button" name="genderoptions" value="male">
+            <span class="mdl-radio__label">Male</span>
+          </label>
+          <label class="mdl-radio mdl-js-radio mdl-js-ripple-effect" for="female-opt">
+            <input type="radio" id="female-opt" class="mdl-radio__button" name="genderoptions" value="female">
+            <span class="mdl-radio__label">Female</span>
+          </label>
+        </div>
+        <br>
+        <div>
+          <span class="mdl-layout-title">Status</span><br>
+          <label class="mdl-radio mdl-js-radio mdl-js-ripple-effect" for="active-opt" style="margin:10px 30px 10px 0">
+            <input type="radio" id="active-opt" class="mdl-radio__button" name="statusoptions" value="active">
+            <span class="mdl-radio__label">Active</span>
+          </label>
+          <label class="mdl-radio mdl-js-radio mdl-js-ripple-effect" for="inactive-opt">
+            <input type="radio" id="inactive-opt" class="mdl-radio__button" name="statusoptions" value="inactive">
+            <span class="mdl-radio__label">Inactive</span>
+          </label>
+        </div><br>
+        <button class="mdl-button mdl-js-button mdl-button--raised mdl-button--accent" onclick=create()>
+          Create
+        </button>
+      </div>
+    </section>
+    <section class="mdl-layout__tab-panel" id="fixed-tab-2">
+      <div class="page-content">
+        <table class="mdl-data-table mdl-js-data-table">
+          <thead>
+            <tr>
+              <th class="mdl-data-table__cell--non-numeric">Name</th>
+              <th class="mdl-data-table__cell--non-numeric">Email</th>
+              <th class="mdl-data-table__cell--non-numeric">Gender</th>
+              <th class="mdl-data-table__cell--non-numeric">Status</th>
+            </tr>
+          </thead>
+          <tbody id="displaytable">
+          </tbody>
+        </table>
+        </div>
+    </section>
+    <section class="mdl-layout__tab-panel" id="fixed-tab-3">
+      <div class="page-content">Update info</div>
+    </section>
+  </section>
+  <section class="mdl-layout__tab-panel" id="fixed-tab-4">
+    <div class="page-content">delete</div>
+  </section>
+  </main>
+</div>
+<script src="script.js"></script>
+  </body>
+</html>
