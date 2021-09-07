@@ -4,7 +4,7 @@
   margin-bottom: 30px;
 }
 
-#displaytable td{
+#displaytable td, #nameinput, #emailinput{
   text-align: left;
 }
 
