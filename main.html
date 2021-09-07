@@ -25,13 +25,14 @@
     <div class="mdl-layout__tab-bar mdl-js-ripple-effect">
       <a href="#fixed-tab-1" class="mdl-layout__tab is-active">READ</a>
       <a href="#fixed-tab-2" class="mdl-layout__tab">CREATE</a>
-      <a href="#fixed-tab-3" class="mdl-layout__tab">UPDATE</a>
     </div>
   </header>
   <main class="mdl-layout__content">
     <section class="mdl-layout__tab-panel" id="fixed-tab-1">
       <div class="page-content">
         <div id="pagenum"></div>
+        <label>Select page: </label><select id="selectPage"></select>
+        <button class='mdl-button mdl-js-button mdl-button--icon' onclick="goSelectedPage()"><i class="material-icons">search</i></button>
         <table class="mdl-data-table mdl-js-data-table">
           <thead>
             <tr>
