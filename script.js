@@ -1,26 +1,45 @@
 let request = new XMLHttpRequest();
 let page = 1;
+let maxPage = 0;
+let pageOption = "";
 
-request.onreadystatechange = function(){
-  if(this.readyState == 4 && this.status == 200){
-    let datalist = JSON.parse(this.response);
-    listAll(datalist);
+setInterval(function (){
+  request.onreadystatechange = function (){
+    if(this.readyState == 4 && this.status == 200){
+      let datalist = JSON.parse(this.response);
+      document.getElementById("displaytable").innerHTML= " "
+      document.getElementById("currentPage").innerHTML= "Page "+ page
+      listAll(datalist);
+      pageOption = "";
+      for(let i=1; i<maxPage; i++){
+        pageOption += "<option value='" + i + "'>" + i + "</option>";
+      }
+      document.getElementById("selectPage").innerHTML = pageOption;
+    }
   }
-}
-request.open('GET', 'https://gorest.co.in/public/v1/users?page=76', true);
-request.setRequestHeader("Content-type", "application/json");
-request.setRequestHeader("Authorization", "Bearer d65c1eb53080a7e1585ec8734451807790d83c28532025a568ef7c9d03bb29d8");
-request.send();
+  if(page != 1){
+    request.open('GET', 'https://gorest.co.in/public/v1/users?page=' + page, true);
+  }
+  else {
+    request.open('GET', 'https://gorest.co.in/public/v1/users?', true);
+  }
+
+  request.setRequestHeader("Content-type", "application/json");
+  request.setRequestHeader("Authorization", "Bearer d65c1eb53080a7e1585ec8734451807790d83c28532025a568ef7c9d03bb29d8");
+  request.send();
+},2000)
+
 
 function listAll(datalist){
-  for(i in datalist.data){
-    if(datalist.data[i].id !== "undefined"){
-      document.getElementById("displaytable").innerHTML += "<tr id='row" + i + "' contenteditable=\"false\"><td id='name" + i + "'>" + datalist.data[i].name +
-      "</td><td id='email" + i + "'>" + datalist.data[i].email + "</td><td id='gender" + i + "'>" + datalist.data[i].gender + "</td><td id='status" + i + "'>" + datalist.data[i].status +
-      "</td><td><button class='mdl-button mdl-js-button mdl-button--icon' onclick=\"deleteUser(" + datalist.data[i].id + ")\"><i class='material-icons'>delete</i></button></td>"+
-      "<td><button class='mdl-button mdl-js-button mdl-button--icon' id=\"editbtn" + i + "\"onclick=\"enableEdit("+ i + ")\"><i class='material-icons'>edit</i></button></td>"+
-      "<td><button class='mdl-button mdl-js-button' id=\"savebtn" + i + "\" onclick=\"saveEdit("+ i + "," + datalist.data[i].id + ")\">save</button></td>"+
-      "<td><button class='mdl-button mdl-js-button' id=\"cancelbtn" + i + "\" onclick=\"cancelEdit("+ i + ")\">cancel</button></td></tr>";
+  maxPage = datalist.meta.pagination.pages;
+  for(e in datalist.data){
+    if(datalist.data[e].id !== "undefined"){
+      document.getElementById("displaytable").innerHTML += "<tr id='row" + e + "' contenteditable=\"false\"><td id='name" + e + "'>" + datalist.data[e].name +
+      "</td><td id='email" + e + "'>" + datalist.data[e].email + "</td><td id='gender" + e + "'>" + datalist.data[e].gender + "</td><td id='status" + e + "'>" + datalist.data[e].status +
+      "</td><td><button class='mdl-button mdl-js-button mdl-button--icon' onclick=\"deleteUser(" + datalist.data[e].id + ")\"><i class='material-icons'>delete</i></button></td>"+
+      "<td><button class='mdl-button mdl-js-button mdl-button--icon' id=\"editbtn" + e + "\"onclick=\"enableEdit("+ e + ")\"><i class='material-icons'>edit</i></button></td>"+
+      "<td><button class='mdl-button mdl-js-button' id=\"savebtn" + e + "\" onclick=\"saveEdit("+ e + "," + datalist.data[e].id + ")\">save</button></td>"+
+      "<td><button class='mdl-button mdl-js-button' id=\"cancelbtn" + e + "\" onclick=\"cancelEdit("+ e + ")\">cancel</button></td></tr>";
     }
   }
 }
@@ -95,32 +114,21 @@ function saveEdit(currRow, currUserId){
   }
 }
 
-function nextPage(nextPgae){
-  page+=1;
-  read(page);
+function goNextPage(){
+  if(page < maxPage){
+    page += 1;
+  }
 }
 
-/*function read(){
-  request.open('GET', 'https://gorest.co.in/public/v1/users?page=1', true);
-  request.setRequestHeader("Content-type", "application/json");
-  request.setRequestHeader("Authorization", "Bearer d65c1eb53080a7e1585ec8734451807790d83c28532025a568ef7c9d03bb29d8");
-  request.send();
-  request.onload = function () {
-    // Begin accessing JSON data here
-    let datalist = JSON.parse(this.response);
-
-    if (request.status >= 200 && request.status < 400) {
-      for(i in datalist.data){
-        document.getElementById("displaytable").innerHTML += "<tr id='row" + i + "'><td>" + datalist.data[i].name +
-        "</td><td>" + datalist.data[i].email + "</td><td>" + datalist.data[i].gender + "</td><td>" + datalist.data[i].status +
-        "</td><td><button class='mdl-button mdl-js-button mdl-button--icon' onclick=\"deleteUser(" + datalist.data[i].id + ")\"><i class='material-icons'>delete</i></button></td>"+
-        "<td><button class='mdl-button mdl-js-button mdl-button--icon' onclick=\"editUser(" + datalist.data[i].id + ")\"><i class='material-icons'>edit</i></button></td></tr>";
-      }
-    }
-  else {
-      console.log('error');
-    }
+function goPrevPage(){
+  if(page > 1){
+    page -= 1;
   }
-}*/
-document.getElementById("pagenum").innerHTML = "<button class=\"mdl-button mdl-js-button mdl-button--icon\"><i class=\"material-icons\">arrow_back_ios</i></button>Page 1"
-+"<button class=\"mdl-button mdl-js-button mdl-button--icon\" onclick=\"nextPage()\"><i class=\"material-icons\">arrow_forward_ios</i></button><br><br>";
+}
+
+function goSelectedPage(){
+  page = document.getElementById("selectPage").value;
+}
+
+document.getElementById("pagenum").innerHTML = "<button class=\"mdl-button mdl-js-button mdl-button--icon\" onclick=\"goPrevPage()\"><i class=\"material-icons\">arrow_back_ios</i></button><label id=\"currentPage\"></label>"
++"<button class=\"mdl-button mdl-js-button mdl-button--icon\" onclick=\"goNextPage()\"><i class=\"material-icons\">arrow_forward_ios</i></button><br><br>";
