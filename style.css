@@ -8,6 +8,18 @@
   text-align: left;
 }
 
-.mdl-button mdl-js-button mdl-button--icon{
-  display:inline-block;
+#savebtn0, #savebtn1, #savebtn2, #savebtn3, #savebtn4, #savebtn5, #savebtn6,
+#savebtn7, #savebtn8, #savebtn9, #savebtn10, #savebtn11, #savebtn12, #savebtn13,
+#savebtn14, #savebtn15, #savebtn16, #savebtn17, #savebtn18, #savebtn19
+{
+  color:ForestGreen;
+  visibility:hidden;
+}
+
+#cancelbtn0, #cancelbtn1, #cancelbtn2, #cancelbtn3, #cancelbtn4, #cancelbtn5,
+#cancelbtn6, #cancelbtn7, #cancelbtn8, #cancelbtn9, #cancelbtn10, #cancelbtn11,
+#cancelbtn12, #cancelbtn13, #cancelbtn14, #cancelbtn15, #cancelbtn16,
+#cancelbtn17, #cancelbtn18, #cancelbtn19{
+  color:Crimson;
+  visibility:hidden;
 }
