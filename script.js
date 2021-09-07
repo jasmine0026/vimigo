@@ -10,6 +10,11 @@ setInterval(function (){
       document.getElementById("displaytable").innerHTML= " "
       document.getElementById("currentPage").innerHTML= "Page "+ page
       listAll(datalist);
+      pageOption = "";
+      for(let i=1; i<maxPage; i++){
+        pageOption += "<option value='" + i + "'>" + i + "</option>";
+      }
+      document.getElementById("selectPage").innerHTML = pageOption;
     }
   }
   if(page != 1){
@@ -18,10 +23,11 @@ setInterval(function (){
   else {
     request.open('GET', 'https://gorest.co.in/public/v1/users?', true);
   }
+
   request.setRequestHeader("Content-type", "application/json");
   request.setRequestHeader("Authorization", "Bearer d65c1eb53080a7e1585ec8734451807790d83c28532025a568ef7c9d03bb29d8");
   request.send();
-},6000)
+},2000)
 
 
 function listAll(datalist){
@@ -36,10 +42,6 @@ function listAll(datalist){
       "<td><button class='mdl-button mdl-js-button' id=\"cancelbtn" + e + "\" onclick=\"cancelEdit("+ e + ")\">cancel</button></td></tr>";
     }
   }
-  for(let i=1; i<maxPage; i++){
-    pageOption += "<option>" + i + "</option>";
-  }
-  document.getElementById("selectPage").innerHTML = pageOption;
 }
 
 function create(){
@@ -122,6 +124,10 @@ function goPrevPage(){
   if(page > 1){
     page -= 1;
   }
+}
+
+function goSelectedPage(){
+  page = document.getElementById("selectPage").value;
 }
 
 document.getElementById("pagenum").innerHTML = "<button class=\"mdl-button mdl-js-button mdl-button--icon\" onclick=\"goPrevPage()\"><i class=\"material-icons\">arrow_back_ios</i></button><label id=\"currentPage\"></label>"

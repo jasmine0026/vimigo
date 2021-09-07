@@ -8,6 +8,11 @@
   text-align: left;
 }
 
+#selectPage{
+  margin-bottom: 20px;
+  width:100px;
+}
+
 #savebtn0, #savebtn1, #savebtn2, #savebtn3, #savebtn4, #savebtn5, #savebtn6,
 #savebtn7, #savebtn8, #savebtn9, #savebtn10, #savebtn11, #savebtn12, #savebtn13,
 #savebtn14, #savebtn15, #savebtn16, #savebtn17, #savebtn18, #savebtn19
