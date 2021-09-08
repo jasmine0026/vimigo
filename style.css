@@ -4,13 +4,21 @@
   margin-bottom: 30px;
 }
 
-#displaytable td, #nameinput, #emailinput{
+#displaytable td{
+  text-align: left;
+}
+
+#nameinput, #emailinput{
   text-align: left;
 }
 
 #selectPage{
   margin-bottom: 20px;
   width:100px;
+}
+
+#createbtn{
+  color:Tomato;
 }
 
 #savebtn0, #savebtn1, #savebtn2, #savebtn3, #savebtn4, #savebtn5, #savebtn6,

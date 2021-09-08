@@ -3,54 +3,75 @@ let page = 1;
 let maxPage = 0;
 let pageOption = "";
 let temp;
+let URL = 'https://gorest.co.in/public/v1/users';
 
 let livedata = setInterval(reload,2000);
 
 function reload(){
-  request.onreadystatechange = function (){
-    if(this.readyState == 4 && this.status == 200){
-      let datalist = JSON.parse(this.response);
-      document.getElementById("displaytable").innerHTML= " "
-      document.getElementById("currentPage").innerHTML= "Page "+ page
-      listAll(datalist);
-      if(datalist.meta != null){
-        maxPage = datalist.meta.pagination.pages;
-        if(maxPage!= temp){
-          pageOption = "";
-          for(let i=1; i<maxPage; i++){
-            pageOption += "<option value='" + i + "'>" + i + "</option>";
-          }
-          document.getElementById("selectPage").innerHTML = pageOption;
-        }
-        temp = maxPage;
-      }
-      else{
-        maxPage = temp;
-      }
-    }
-  }
+  let thisUrl = "";
   if(page != 1){
-    request.open('GET', 'https://gorest.co.in/public/v1/users?page=' + page, true);
+    thisUrl = 'https://gorest.co.in/public/v1/users?page=' + page;
   }
   else {
-    request.open('GET', 'https://gorest.co.in/public/v1/users?', true);
+    thisUrl = 'https://gorest.co.in/public/v1/users?';
   }
 
-  request.setRequestHeader("Content-type", "application/json");
-  request.setRequestHeader("Authorization", "Bearer d65c1eb53080a7e1585ec8734451807790d83c28532025a568ef7c9d03bb29d8");
-  request.send();
+  handleHttp('GET', thisUrl, null, function(datalist){
+    document.getElementById("displaytable").innerHTML= " "
+    document.getElementById("currentPage").innerHTML= "Page "+ page
+
+    if(datalist.meta != null){
+      listAll(datalist);
+      maxPage = datalist.meta.pagination.pages;
+      if(maxPage!= temp){
+        pageOption = "";
+        for(let i=1; i<maxPage+1; i++){
+          pageOption += "<option value='" + i + "'>" + i + "</option>";
+        }
+        document.getElementById("selectPage").innerHTML = pageOption;
+      }
+      temp = maxPage;
+    }
+    else{
+      maxPage = temp;
+    }
+  });
 }
 
 function listAll(datalist){
   for(e in datalist.data){
-    if(datalist.data[e].id != "undefined"){
       document.getElementById("displaytable").innerHTML += "<tr id='row" + e + "' contenteditable=\"false\"><td id='name" + e + "'>" + datalist.data[e].name +
       "</td><td id='email" + e + "'>" + datalist.data[e].email + "</td><td id='gender" + e + "'>" + datalist.data[e].gender + "</td><td id='status" + e + "'>" + datalist.data[e].status +
       "</td><td><button class='mdl-button mdl-js-button mdl-button--icon' onclick=\"deleteUser(" + datalist.data[e].id + ")\"><i class='material-icons'>delete</i></button></td>"+
       "<td><button class='mdl-button mdl-js-button mdl-button--icon' id=\"editbtn" + e + "\"onclick=\"enableEdit("+ e + ")\"><i class='material-icons'>edit</i></button></td>"+
       "<td><button class='mdl-button mdl-js-button' id=\"savebtn" + e + "\" onclick=\"saveEdit("+ e + "," + datalist.data[e].id + ")\">save</button></td>"+
       "<td><button class='mdl-button mdl-js-button' id=\"cancelbtn" + e + "\" onclick=\"cancelEdit("+ e + ")\">cancel</button></td></tr>";
+  }
+}
+
+function handleHttp(action, url, value, resolve){
+  let request = new XMLHttpRequest();
+
+  request.onreadystatechange = function(){
+    if(this.status >= 200 && this.status < 400 && this.readyState == 4){
+      if(resolve){
+        resolve(JSON.parse(this.response));
+      }
     }
+    else if(this.status >= 400){
+      alert("Error code: " + this.status + "\nMessage: " + this.statusText);
+      }
+    };
+
+  request.open(action,url);
+  request.setRequestHeader("Content-type", "application/json");
+  request.setRequestHeader("Authorization", "Bearer d65c1eb53080a7e1585ec8734451807790d83c28532025a568ef7c9d03bb29d8");
+
+  if(value){
+    request.send(value);
+  }
+  else{
+    request.send();
   }
 }
 
@@ -60,33 +81,23 @@ function create(){
   let gender = document.getElementById("genderlist").value;
   let status = document.getElementById("statuslist").value;
 
-  request.open('POST', 'https://gorest.co.in/public/v1/users', true);
-  request.setRequestHeader("Content-type", "application/json");
-  request.setRequestHeader("Authorization", "Bearer d65c1eb53080a7e1585ec8734451807790d83c28532025a568ef7c9d03bb29d8");
-  request.send('{"name":"'+name+'","gender":"'+gender+'","email":"'+email+'","status":"'+status+'"}');
-
-  // reset input fields
-  document.getElementById("nameinput").innerHTML = "";
-  document.getElementById("emailinput").innerHTML = "";
-  document.getElementById('genderlist').selectedIndex = 0;
-  document.getElementById('statuslist').selectedIndex = 0;
-  if(request.status >= 200 && request.status < 400){
-    alert("Yay! Created successfully");
-  }
+  handleHttp('POST', URL, '{"name":"'+name+'","gender":"'+gender+'","email":"'+email+'","status":"'+status+'"}', function(){
+    alert("New user added successfully");
+    // reset input field
+    document.getElementById("nameinput").innerHTML = "";
+    document.getElementById("emailinput").innerHTML = "";
+    document.getElementById('genderlist').selectedIndex = 0;
+    document.getElementById('statuslist').selectedIndex = 0;
+  });
 }
 
 
 function deleteUser(currUser){
-  request.open('DELETE', 'https://gorest.co.in/public/v1/users/' + currUser, true);
-  request.setRequestHeader("Content-type", "application/json");
-  request.setRequestHeader("Authorization", "Bearer d65c1eb53080a7e1585ec8734451807790d83c28532025a568ef7c9d03bb29d8");
-  request.send();
-  if(request.status >= 200 && request.status < 400){
-    alert("Deleted successfully");
-  }
+  handleHttp('DELETE', URL + '/' + currUser, null, null);
 }
 
 function enableEdit(curr){
+  // pause refreshing
   clearInterval(livedata);
   livedata = null;
   document.getElementById("row"+curr).setAttribute("contenteditable", true)
@@ -100,6 +111,7 @@ function cancelEdit(curr){
   document.getElementById("savebtn"+curr).style.visibility = "hidden"
   document.getElementById("cancelbtn"+curr).style.visibility = "hidden"
   document.getElementById("editbtn"+curr).style.visibility = "visible"
+  // resume refreshing
   livedata = setInterval(reload,2000);
 }
 
@@ -114,14 +126,20 @@ function saveEdit(currRow, currUserId){
   let gender = document.getElementById("gender"+currRow).innerText;
   let status = document.getElementById("status"+currRow).innerText;
 
-  request.open('PUT', 'https://gorest.co.in/public/v1/users/' + currUserId, true);
-  request.setRequestHeader("Content-type", "application/json");
-  request.setRequestHeader("Authorization", "Bearer d65c1eb53080a7e1585ec8734451807790d83c28532025a568ef7c9d03bb29d8");
-  request.send('{"name":"'+name+'","gender":"'+gender+'","email":"'+email+'","status":"'+status+'"}');
-  livedata = setInterval(reload,2000);
-  if(request.status >= 200 && request.status < 400){
-    alert("Edited successfully");
+  // check validity of data input
+  if(gender != 'male' &&  gender != 'female'){
+    alert("Please enter either \"male\" or \"female\"");
   }
+  else if(status != 'active' && status != 'inactive'){
+    alert("Please enter either \"active\" or \"inactive\"");
+  }
+  else{
+    handleHttp('PUT', URL + '/' + currUserId, '{"name":"'+name+'","gender":"'+gender+'","email":"'+email+'","status":"'+status+'"}', function(){
+      alert("Edited successfully");
+    });
+  }
+  // resume refreshing
+  livedata = setInterval(reload,2000);
 }
 
 function goNextPage(){
