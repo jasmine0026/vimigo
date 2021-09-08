@@ -4,6 +4,10 @@
   margin-bottom: 30px;
 }
 
+.mdl-layout__header-row{
+  background-color:SlateBlue;
+}
+
 #displaytable td{
   text-align: left;
 }
@@ -19,6 +23,10 @@
 
 #createbtn{
   color:Tomato;
+}
+
+#searchBtn{
+  color:SkyBlue;
 }
 
 #savebtn0, #savebtn1, #savebtn2, #savebtn3, #savebtn4, #savebtn5, #savebtn6,
