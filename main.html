@@ -26,16 +26,20 @@
     <div class="page-content">
       <div id="pagenum"></div>
       <label>Select page: </label><select id="selectPage"></select>
-      <button class='mdl-button mdl-js-button mdl-button--icon' id="searchBtn" onclick="goSelectedPage()"><i class="material-icons">search</i></button>
+      <button class='mdl-button mdl-js-button mdl-button--icon' id="searchBtn" onclick="goSelectedPage()"><i class="material-icons">search</i></button><br>
+      <label>Search by ID: </label><input type="text" id="findId" name="ID">
+      <button class='mdl-button mdl-js-button mdl-button--icon' id="searchBtn" onclick="findUser()"><i class="material-icons">search</i></button><br><br>
       <table class="mdl-data-table mdl-js-data-table">
         <thead>
           <tr>
+            <th class="mdl-data-table__cell--non-numeric">Id</th>
             <th class="mdl-data-table__cell--non-numeric">Name</th>
             <th class="mdl-data-table__cell--non-numeric">Email</th>
             <th class="mdl-data-table__cell--non-numeric">Gender</th>
             <th class="mdl-data-table__cell--non-numeric">Status</th>
           </tr>
           <tr>
+            <td></td>
             <td contenteditable="true" id="nameinput"></td>
             <td contenteditable="true" id="emailinput"></td>
             <td class="dropdown">
@@ -51,7 +55,7 @@
              </select>
           </td>
           <td>
-            <button class='mdl-button mdl-js-button mdl-button--icon' id="createbtn" onclick="create()"><i class='material-icons'>add_circle_outline</i></button>
+            <button class='mdl-button mdl-js-button mdl-button--icon' id="createbtn" onclick="createUser()"><i class='material-icons'>add_circle_outline</i></button>
           </td><td></td><td></td><td></td>
         </tr>
         </thead>

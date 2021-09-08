@@ -18,7 +18,7 @@
 
 #selectPage{
   margin-bottom: 20px;
-  width:100px;
+  width:90px;
 }
 
 #createbtn{
@@ -27,6 +27,10 @@
 
 #searchBtn{
   color:SkyBlue;
+}
+
+#findId{
+  width: 80px;
 }
 
 #savebtn0, #savebtn1, #savebtn2, #savebtn3, #savebtn4, #savebtn5, #savebtn6,
