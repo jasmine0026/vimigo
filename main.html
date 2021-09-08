@@ -21,97 +21,48 @@
       <!-- Title -->
       <span class="mdl-layout-title">Welcome to Vimigo</span>
     </div>
-    <!-- Tabs -->
-    <div class="mdl-layout__tab-bar mdl-js-ripple-effect">
-      <a href="#fixed-tab-1" class="mdl-layout__tab is-active">READ</a>
-      <a href="#fixed-tab-2" class="mdl-layout__tab">CREATE</a>
-    </div>
   </header>
   <main class="mdl-layout__content">
-    <section class="mdl-layout__tab-panel" id="fixed-tab-1">
-      <div class="page-content">
-        <div id="pagenum"></div>
-        <label>Select page: </label><select id="selectPage"></select>
-        <button class='mdl-button mdl-js-button mdl-button--icon' onclick="goSelectedPage()"><i class="material-icons">search</i></button>
-        <table class="mdl-data-table mdl-js-data-table">
-          <thead>
-            <tr>
-              <th class="mdl-data-table__cell--non-numeric">Name</th>
-              <th class="mdl-data-table__cell--non-numeric">Email</th>
-              <th class="mdl-data-table__cell--non-numeric">Gender</th>
-              <th class="mdl-data-table__cell--non-numeric">Status</th>
-            </tr>
-            <tr>
-              <td contenteditable="true" id="nameinput"></td>
-              <td contenteditable="true" id="emailinput"></td>
-              <td class="dropdown">
-                <select id="genderlist" >
-                    <option value="male">male</option>
-                    <option value="female">female</option>
-                </select>
-             </td>
-             <td class="dropdown">
-               <select id="statuslist" >
-                   <option value="active">active</option>
-                   <option value="inactive">inactive</option>
-               </select>
-            </td>
-            <td>
-              <button class="mdl-button mdl-js-button mdl-button--fab mdl-button--mini-fab mdl-button--colored" onclick="create()">
-                <i class="material-icons">add</i>
-              </button>
-            </td><td></td><td></td><td></td>
+    <div class="page-content">
+      <div id="pagenum"></div>
+      <label>Select page: </label><select id="selectPage"></select>
+      <button class='mdl-button mdl-js-button mdl-button--icon' onclick="goSelectedPage()"><i class="material-icons">search</i></button>
+      <table class="mdl-data-table mdl-js-data-table">
+        <thead>
+          <tr>
+            <th class="mdl-data-table__cell--non-numeric">Name</th>
+            <th class="mdl-data-table__cell--non-numeric">Email</th>
+            <th class="mdl-data-table__cell--non-numeric">Gender</th>
+            <th class="mdl-data-table__cell--non-numeric">Status</th>
           </tr>
-          </thead>
-          <tbody id="displaytable">
-          </tbody>
-        </table>
-        </div>
-    </section>
-    <section class="mdl-layout__tab-panel is-active" id="fixed-tab-2">
-      <div class="page-content">
-        <form action="#">
-          <span class="mdl-layout-title">Name</span>
-          <div class="mdl-textfield mdl-js-textfield">
-            <input class="mdl-textfield__input" type="text" id="name">
-          </div>
-        </form>
-        <form action="#">
-          <span class="mdl-layout-title">Email</span>
-          <div class="mdl-textfield mdl-js-textfield">
-            <input class="mdl-textfield__input" type="text" id="email">
-          </div>
-        </form>
-        <div>
-          <span class="mdl-layout-title">Gender</span><br>
-          <label class="mdl-radio mdl-js-radio mdl-js-ripple-effect" for="male-opt" style="margin:10px 30px 10px 0">
-            <input type="radio" id="male-opt" class="mdl-radio__button" name="genderoptions" value="male">
-            <span class="mdl-radio__label">Male</span>
-          </label>
-          <label class="mdl-radio mdl-js-radio mdl-js-ripple-effect" for="female-opt">
-            <input type="radio" id="female-opt" class="mdl-radio__button" name="genderoptions" value="female">
-            <span class="mdl-radio__label">Female</span>
-          </label>
-        </div>
-        <br>
-        <div>
-          <span class="mdl-layout-title">Status</span><br>
-          <label class="mdl-radio mdl-js-radio mdl-js-ripple-effect" for="active-opt" style="margin:10px 30px 10px 0">
-            <input type="radio" id="active-opt" class="mdl-radio__button" name="statusoptions" value="active">
-            <span class="mdl-radio__label">Active</span>
-          </label>
-          <label class="mdl-radio mdl-js-radio mdl-js-ripple-effect" for="inactive-opt">
-            <input type="radio" id="inactive-opt" class="mdl-radio__button" name="statusoptions" value="inactive">
-            <span class="mdl-radio__label">Inactive</span>
-          </label>
-        </div><br>
-        <button class="mdl-button mdl-js-button mdl-button--raised mdl-button--accent" onclick="create()">
-          Create
-        </button>
+          <tr>
+            <td contenteditable="true" id="nameinput"></td>
+            <td contenteditable="true" id="emailinput"></td>
+            <td class="dropdown">
+              <select id="genderlist" >
+                  <option value="male">male</option>
+                  <option value="female">female</option>
+              </select>
+           </td>
+           <td class="dropdown">
+             <select id="statuslist" >
+                 <option value="active">active</option>
+                 <option value="inactive">inactive</option>
+             </select>
+          </td>
+          <td>
+            <button class="mdl-button mdl-js-button mdl-button--fab mdl-button--mini-fab mdl-button--colored" onclick="create()">
+              <i class="material-icons">add</i>
+            </button>
+          </td><td></td><td></td><td></td>
+        </tr>
+        </thead>
+        <tbody id="displaytable">
+        </tbody>
+      </table>
       </div>
-    </section>
-  </main>
-</div>
+    </main>
+  </div>
 <script src="script.js"></script>
   </body>
 </html>

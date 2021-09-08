@@ -2,19 +2,31 @@ let request = new XMLHttpRequest();
 let page = 1;
 let maxPage = 0;
 let pageOption = "";
+let temp;
 
-setInterval(function e(){
+let livedata = setInterval(reload,2000);
+
+function reload(){
   request.onreadystatechange = function (){
     if(this.readyState == 4 && this.status == 200){
       let datalist = JSON.parse(this.response);
       document.getElementById("displaytable").innerHTML= " "
       document.getElementById("currentPage").innerHTML= "Page "+ page
       listAll(datalist);
-      pageOption = "";
-      for(let i=1; i<maxPage; i++){
-        pageOption += "<option value='" + i + "'>" + i + "</option>";
+      if(datalist.meta != null){
+        maxPage = datalist.meta.pagination.pages;
+        if(maxPage!= temp){
+          pageOption = "";
+          for(let i=1; i<maxPage; i++){
+            pageOption += "<option value='" + i + "'>" + i + "</option>";
+          }
+          document.getElementById("selectPage").innerHTML = pageOption;
+        }
+        temp = maxPage;
       }
-      document.getElementById("selectPage").innerHTML = pageOption;
+      else{
+        maxPage = temp;
+      }
     }
   }
   if(page != 1){
@@ -27,13 +39,11 @@ setInterval(function e(){
   request.setRequestHeader("Content-type", "application/json");
   request.setRequestHeader("Authorization", "Bearer d65c1eb53080a7e1585ec8734451807790d83c28532025a568ef7c9d03bb29d8");
   request.send();
-},2000)
-
+}
 
 function listAll(datalist){
-  maxPage = datalist.meta.pagination.pages;
   for(e in datalist.data){
-    if(datalist.data[e].id !== "undefined"){
+    if(datalist.data[e].id != "undefined"){
       document.getElementById("displaytable").innerHTML += "<tr id='row" + e + "' contenteditable=\"false\"><td id='name" + e + "'>" + datalist.data[e].name +
       "</td><td id='email" + e + "'>" + datalist.data[e].email + "</td><td id='gender" + e + "'>" + datalist.data[e].gender + "</td><td id='status" + e + "'>" + datalist.data[e].status +
       "</td><td><button class='mdl-button mdl-js-button mdl-button--icon' onclick=\"deleteUser(" + datalist.data[e].id + ")\"><i class='material-icons'>delete</i></button></td>"+
@@ -77,6 +87,8 @@ function deleteUser(currUser){
 }
 
 function enableEdit(curr){
+  clearInterval(livedata);
+  livedata = null;
   document.getElementById("row"+curr).setAttribute("contenteditable", true)
   document.getElementById("savebtn"+curr).style.visibility = "visible"
   document.getElementById("cancelbtn"+curr).style.visibility = "visible"
@@ -88,6 +100,7 @@ function cancelEdit(curr){
   document.getElementById("savebtn"+curr).style.visibility = "hidden"
   document.getElementById("cancelbtn"+curr).style.visibility = "hidden"
   document.getElementById("editbtn"+curr).style.visibility = "visible"
+  livedata = setInterval(reload,2000);
 }
 
 function saveEdit(currRow, currUserId){
@@ -105,6 +118,7 @@ function saveEdit(currRow, currUserId){
   request.setRequestHeader("Content-type", "application/json");
   request.setRequestHeader("Authorization", "Bearer d65c1eb53080a7e1585ec8734451807790d83c28532025a568ef7c9d03bb29d8");
   request.send('{"name":"'+name+'","gender":"'+gender+'","email":"'+email+'","status":"'+status+'"}');
+  livedata = setInterval(reload,2000);
   if(request.status >= 200 && request.status < 400){
     alert("Edited successfully");
   }
@@ -112,7 +126,7 @@ function saveEdit(currRow, currUserId){
 
 function goNextPage(){
   if(page < maxPage){
-    page += 1;
+    page = page + 1;
   }
 }
 
@@ -123,7 +137,7 @@ function goPrevPage(){
 }
 
 function goSelectedPage(){
-  page = document.getElementById("selectPage").value;
+  page = parseInt(document.getElementById("selectPage").value);
 }
 
 document.getElementById("pagenum").innerHTML = "<button class=\"mdl-button mdl-js-button mdl-button--icon\" onclick=\"goPrevPage()\"><i class=\"material-icons\">arrow_back_ios</i></button><label id=\"currentPage\"></label>"
