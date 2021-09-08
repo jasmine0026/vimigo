@@ -45,17 +45,22 @@
               <td contenteditable="true" id="nameinput"></td>
               <td contenteditable="true" id="emailinput"></td>
               <td class="dropdown">
-                <select name="genderlist" >
+                <select id="genderlist" >
                     <option value="male">male</option>
                     <option value="female">female</option>
                 </select>
              </td>
              <td class="dropdown">
-               <select name="statuslist" >
+               <select id="statuslist" >
                    <option value="active">active</option>
                    <option value="inactive">inactive</option>
                </select>
-            </td><td></td><td></td><td></td><td></td>
+            </td>
+            <td>
+              <button class="mdl-button mdl-js-button mdl-button--fab mdl-button--mini-fab mdl-button--colored" onclick="create()">
+                <i class="material-icons">add</i>
+              </button>
+            </td><td></td><td></td><td></td>
           </tr>
           </thead>
           <tbody id="displaytable">

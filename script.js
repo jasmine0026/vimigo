@@ -3,7 +3,7 @@ let page = 1;
 let maxPage = 0;
 let pageOption = "";
 
-setInterval(function (){
+setInterval(function e(){
   request.onreadystatechange = function (){
     if(this.readyState == 4 && this.status == 200){
       let datalist = JSON.parse(this.response);
@@ -45,25 +45,21 @@ function listAll(datalist){
 }
 
 function create(){
-  let name = document.getElementById("name").value;
-  let email = document.getElementById("email").value;
-  let gender,status;
-  if(document.getElementById("male-opt").checked){
-    gender = document.getElementById("male-opt").value;
-  }
-  else{
-    gender = document.getElementById("female-opt").value;
-  }
-  if(document.getElementById("active-opt").checked){
-    status = document.getElementById("active-opt").value;
-  }
-  else{
-    status = document.getElementById("inactive-opt").value;
-  }
+  let name = document.getElementById("nameinput").innerText;
+  let email = document.getElementById("emailinput").innerText;
+  let gender = document.getElementById("genderlist").value;
+  let status = document.getElementById("statuslist").value;
+
   request.open('POST', 'https://gorest.co.in/public/v1/users', true);
   request.setRequestHeader("Content-type", "application/json");
   request.setRequestHeader("Authorization", "Bearer d65c1eb53080a7e1585ec8734451807790d83c28532025a568ef7c9d03bb29d8");
   request.send('{"name":"'+name+'","gender":"'+gender+'","email":"'+email+'","status":"'+status+'"}');
+
+  // reset input fields
+  document.getElementById("nameinput").innerHTML = "";
+  document.getElementById("emailinput").innerHTML = "";
+  document.getElementById('genderlist').selectedIndex = 0;
+  document.getElementById('statuslist').selectedIndex = 0;
   if(request.status >= 200 && request.status < 400){
     alert("Yay! Created successfully");
   }
