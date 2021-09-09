@@ -20,7 +20,7 @@ function handleHttp(action, url, value, resolve){
     }
     // error
     else if(this.status >= 400 && this.readyState == 4){
-      alert("Error code: " + this.status + "\nMessage: " + this.statusText);
+      alert("Status code: " + this.status + "\nStatus text: " + this.statusText + "\nPlease check and try again");
       }
     };
 
@@ -52,8 +52,8 @@ function reload(){
 
   // call handlehttp function to send GET request
   handleHttp('GET', thisUrl, null, function(datalist){
-    document.getElementById("displayTable").innerHTML= " "
-    document.getElementById("currentPage").innerHTML= "Page "+ page
+    document.getElementById("displayTable").innerHTML= " ";
+    document.getElementById("currentPage").innerHTML= "Page "+ page;
 
     // show all data obtained in table
     if(datalist.meta != null){
@@ -128,22 +128,24 @@ function enableEdit(curr){
   document.getElementById("editBtn"+curr).style.visibility = "hidden"
 }
 
-// close edit mode
-function cancelEdit(curr){
+// exit edit mode
+function hideButton(curr){
   document.getElementById("row"+curr).setAttribute("contenteditable", false)
   document.getElementById("saveBtn"+curr).style.visibility = "hidden"
   document.getElementById("cancelBtn"+curr).style.visibility = "hidden"
   document.getElementById("editBtn"+curr).style.visibility = "visible"
+}
+
+// close edit mode and continue reloading page
+function cancelEdit(curr){
+  hideButton(curr);
   // resume refreshing
   livedata = setInterval(reload,2000);
 }
 
 // save new changes
 function saveEdit(currRow, currUserId){
-  document.getElementById("row"+currRow).setAttribute("contenteditable", false)
-  document.getElementById("editBtn"+currRow).style.visibility = "visible"
-  document.getElementById("saveBtn"+currRow).style.visibility = "hidden"
-  document.getElementById("cancelBtn"+currRow).style.visibility = "hidden"
+  hideButton(currRow);
 
   // obtain data
   let id = document.getElementById("id"+currRow).innerText;
@@ -152,19 +154,10 @@ function saveEdit(currRow, currUserId){
   let gender = document.getElementById("gender"+currRow).innerText;
   let status = document.getElementById("status"+currRow).innerText;
 
-  // check validity of data input
-  if(gender != 'male' &&  gender != 'female'){
-    alert("Please enter either \"male\" or \"female\"");
-  }
-  else if(status != 'active' && status != 'inactive'){
-    alert("Please enter either \"active\" or \"inactive\"");
-  }
-  else{
-    // perform PUT request by calling handleHttp function
-    handleHttp('PUT', URL + '/' + currUserId, '{"name":"'+name+'","gender":"'+gender+'","email":"'+email+'","status":"'+status+'"}', function(){
-      alert("Edited successfully");
-    });
-  }
+  // perform PUT request by calling handleHttp function
+  handleHttp('PUT', URL + '/' + currUserId, '{"name":"'+name+'","gender":"'+gender+'","email":"'+email+'","status":"'+status+'"}', function(){
+    alert("Edited successfully");
+  });
   // resume refreshing
   livedata = setInterval(reload,2000);
 }
@@ -219,7 +212,7 @@ function findUser(){
       document.getElementById("findId").value = "";
   }
     // resume refreshing
-    livedata = setInterval(reload,10000);
+    livedata = setInterval(reload,8000);
 }
 
 // display navigate button when page loads
