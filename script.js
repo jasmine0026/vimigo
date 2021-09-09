@@ -1,4 +1,3 @@
-let request = new XMLHttpRequest();
 let page = 1;
 let maxPage = 0;
 let pageOption = "";
@@ -46,7 +45,7 @@ function reload(){
   }
 
   handleHttp('GET', thisUrl, null, function(datalist){
-    document.getElementById("displaytable").innerHTML= " "
+    document.getElementById("displayTable").innerHTML= " "
     document.getElementById("currentPage").innerHTML= "Page "+ page
 
     if(datalist.meta != null){
@@ -70,30 +69,30 @@ function reload(){
 // display user data in table format
 function listAll(datalist){
   for(e in datalist.data){
-      document.getElementById("displaytable").innerHTML += "<tr id='row" + e + "' contenteditable=\"false\"><td id='id" + e + "'>" + datalist.data[e].id +
+      document.getElementById("displayTable").innerHTML += "<tr id='row" + e + "' contenteditable=\"false\"><td id='id" + e + "'>" + datalist.data[e].id +
       "</td><td id='name" + e + "'>" + datalist.data[e].name + "</td><td id='email" + e + "'>" + datalist.data[e].email + "</td><td id='gender" + e + "'>" +
       datalist.data[e].gender + "</td><td id='status" + e + "'>" + datalist.data[e].status +
       "</td><td><button class='mdl-button mdl-js-button mdl-button--icon' onclick=\"deleteUser(" + datalist.data[e].id + ")\"><i class='material-icons'>delete</i></button></td>"+
-      "<td><button class='mdl-button mdl-js-button mdl-button--icon' id=\"editbtn" + e + "\"onclick=\"enableEdit("+ e + ")\"><i class='material-icons'>edit</i></button></td>"+
-      "<td><button class='mdl-button mdl-js-button' id=\"savebtn" + e + "\" onclick=\"saveEdit("+ e + "," + datalist.data[e].id + ")\">save</button></td>"+
-      "<td><button class='mdl-button mdl-js-button' id=\"cancelbtn" + e + "\" onclick=\"cancelEdit("+ e + ")\">cancel</button></td></tr>";
+      "<td><button class='mdl-button mdl-js-button mdl-button--icon' id=\"editBtn" + e + "\"onclick=\"enableEdit("+ e + ")\"><i class='material-icons'>edit</i></button></td>"+
+      "<td><button class='mdl-button mdl-js-button' id=\"saveBtn" + e + "\" onclick=\"saveEdit("+ e + "," + datalist.data[e].id + ")\">save</button></td>"+
+      "<td><button class='mdl-button mdl-js-button' id=\"cancelBtn" + e + "\" onclick=\"cancelEdit("+ e + ")\">cancel</button></td></tr>";
   }
 }
 
 // create new user
 function createUser(){
-  let name = document.getElementById("nameinput").innerText;
-  let email = document.getElementById("emailinput").innerText;
-  let gender = document.getElementById("genderlist").value;
-  let status = document.getElementById("statuslist").value;
+  let name = document.getElementById("nameInput").innerText;
+  let email = document.getElementById("emailInput").innerText;
+  let gender = document.getElementById("genderList").value;
+  let status = document.getElementById("statusList").value;
 
   handleHttp('POST', URL, '{"name":"'+name+'","gender":"'+gender+'","email":"'+email+'","status":"'+status+'"}', function(){
     alert("New user added successfully");
     // reset input field
-    document.getElementById("nameinput").innerHTML = "";
-    document.getElementById("emailinput").innerHTML = "";
-    document.getElementById('genderlist').selectedIndex = 0;
-    document.getElementById('statuslist').selectedIndex = 0;
+    document.getElementById("nameInput").innerHTML = "";
+    document.getElementById("emailInput").innerHTML = "";
+    document.getElementById('genderList').selectedIndex = 0;
+    document.getElementById('statusList').selectedIndex = 0;
   });
 }
 
@@ -108,17 +107,17 @@ function enableEdit(curr){
   clearInterval(livedata);
   livedata = null;
   document.getElementById("row"+curr).setAttribute("contenteditable", true)
-  document.getElementById("savebtn"+curr).style.visibility = "visible"
-  document.getElementById("cancelbtn"+curr).style.visibility = "visible"
-  document.getElementById("editbtn"+curr).style.visibility = "hidden"
+  document.getElementById("saveBtn"+curr).style.visibility = "visible"
+  document.getElementById("cancelBtn"+curr).style.visibility = "visible"
+  document.getElementById("editBtn"+curr).style.visibility = "hidden"
 }
 
 // close edit mode
 function cancelEdit(curr){
   document.getElementById("row"+curr).setAttribute("contenteditable", false)
-  document.getElementById("savebtn"+curr).style.visibility = "hidden"
-  document.getElementById("cancelbtn"+curr).style.visibility = "hidden"
-  document.getElementById("editbtn"+curr).style.visibility = "visible"
+  document.getElementById("saveBtn"+curr).style.visibility = "hidden"
+  document.getElementById("cancelBtn"+curr).style.visibility = "hidden"
+  document.getElementById("editBtn"+curr).style.visibility = "visible"
   // resume refreshing
   livedata = setInterval(reload,2000);
 }
@@ -126,10 +125,11 @@ function cancelEdit(curr){
 // save new changes
 function saveEdit(currRow, currUserId){
   document.getElementById("row"+currRow).setAttribute("contenteditable", false)
-  document.getElementById("editbtn"+currRow).style.visibility = "visible"
-  document.getElementById("savebtn"+currRow).style.visibility = "hidden"
-  document.getElementById("cancelbtn"+currRow).style.visibility = "hidden"
+  document.getElementById("editBtn"+currRow).style.visibility = "visible"
+  document.getElementById("saveBtn"+currRow).style.visibility = "hidden"
+  document.getElementById("cancelBtn"+currRow).style.visibility = "hidden"
 
+  let id = document.getElementById("id"+currRow).innerText;
   let name = document.getElementById("name"+currRow).innerText;
   let email = document.getElementById("email"+currRow).innerText;
   let gender = document.getElementById("gender"+currRow).innerText;
@@ -144,7 +144,7 @@ function saveEdit(currRow, currUserId){
   }
   else{
     handleHttp('PUT', URL + '/' + currUserId, '{"name":"'+name+'","gender":"'+gender+'","email":"'+email+'","status":"'+status+'"}', function(){
-      alert("Edited successfully\nName: " + name + "\nEmail: " + email + "\nGender: " + gender + "\nStatus: " + status);
+      alert("Edited successfully\nId: " + id + "\nName: " + name + "\nEmail: " + email + "\nGender: " + gender + "\nStatus: " + status);
     });
   }
   // resume refreshing
@@ -155,6 +155,8 @@ function saveEdit(currRow, currUserId){
 function goNextPage(){
   if(page < maxPage){
     page = page + 1;
+    // resume refreshing
+    livedata = setInterval(reload,2000);
   }
 }
 
@@ -162,12 +164,17 @@ function goNextPage(){
 function goPrevPage(){
   if(page > 1){
     page -= 1;
+    // resume refreshing
+    livedata = setInterval(reload,2000);
   }
 }
 
 // navigate to selected page
 function goSelectedPage(){
   page = parseInt(document.getElementById("selectPage").value);
+  document.getElementById("selectPage").selectedIndex = 0;
+  // resume refreshing
+  livedata = setInterval(reload,2000);
 }
 
 // identify specific user based on id inputted
@@ -178,16 +185,17 @@ function findUser(){
   let idnum = document.getElementById("findId").value;
 
   handleHttp('GET', URL + '/' + idnum, null, function(datalist){
-    document.getElementById("displaytable").innerHTML= " ";
+    document.getElementById("displayTable").innerHTML= " ";
     document.getElementById("currentPage").innerHTML= "Page "+ page
 
-    if(datalist.data.length != 'undefined'){
-      listAll(datalist);
+    if(datalist.data != null){
+      document.getElementById("displayTable").innerHTML = "<tr id='row" + 0 + "' contenteditable=\"false\"><td id='id" + 0 + "'>" + datalist.data.id +
+      "</td><td id='name" + 0 + "'>" + datalist.data.name + "</td><td id='email" + e + "'>" + datalist.data.email + "</td><td id='gender" + 0 + "'>" +
+      datalist.data.gender + "</td><td id='status" + 0 + "'>" + datalist.data.status + "<td></tr>";
+      document.getElementById("findId").value = "";
     }});
-  // resume refreshing
-  //livedata = setInterval(reload,2000);
 }
 
 // display navigate button when page loads
-document.getElementById("pagenum").innerHTML = "<button class=\"mdl-button mdl-js-button mdl-button--icon\" onclick=\"goPrevPage()\"><i class=\"material-icons\">arrow_back_ios</i></button><label id=\"currentPage\"></label>"
+document.getElementById("pageNum").innerHTML = "<button class=\"mdl-button mdl-js-button mdl-button--icon\" onclick=\"goPrevPage()\"><i class=\"material-icons\">arrow_back_ios</i></button><label id=\"currentPage\"></label>"
 +"<button class=\"mdl-button mdl-js-button mdl-button--icon\" onclick=\"goNextPage()\"><i class=\"material-icons\">arrow_forward_ios</i></button><br><br>";

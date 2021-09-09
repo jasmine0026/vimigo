@@ -1,5 +1,5 @@
 .mdl-layout__content{
-  margin-left: 80px;
+  margin-left: 70px;
   margin-top: 30px;
   margin-bottom: 30px;
 }
@@ -8,43 +8,57 @@
   background-color:SlateBlue;
 }
 
-#displaytable td{
+#displayTable td{
   text-align: left;
 }
 
-#nameinput, #emailinput{
+th{
+  background: SkyBlue;
+}
+
+#nameInput, #emailInput{
   text-align: left;
 }
 
 #selectPage{
-  margin-bottom: 20px;
   width:90px;
 }
 
-#createbtn{
+#createBtn{
   color:Tomato;
 }
 
 #searchBtn{
-  color:SkyBlue;
+  color:Tomato;
 }
 
 #findId{
-  width: 80px;
+  width: 100px;
 }
 
-#savebtn0, #savebtn1, #savebtn2, #savebtn3, #savebtn4, #savebtn5, #savebtn6,
-#savebtn7, #savebtn8, #savebtn9, #savebtn10, #savebtn11, #savebtn12, #savebtn13,
-#savebtn14, #savebtn15, #savebtn16, #savebtn17, #savebtn18, #savebtn19
+#idLabel{
+  margin-left: 20px;
+}
+
+#editBtn0, #editBtn1, #editBtn2, #editBtn3, #editBtn4, #editBtn5, #editBtn6,
+#editBtn7, #editBtn8, #editBtn9, #editBtn10, #editBtn11, #editBtn12, #editBtn13,
+#editBtn14, #editBtn15, #editBtn16, #editBtn17, #editBtn18, #editBtn19
+{
+  color:Silver;
+}
+
+#saveBtn0, #saveBtn1, #saveBtn2, #saveBtn3, #saveBtn4, #saveBtn5, #saveBtn6,
+#saveBtn7, #saveBtn8, #saveBtn9, #saveBtn10, #saveBtn11, #saveBtn12, #saveBtn13,
+#saveBtn14, #saveBtn15, #saveBtn16, #saveBtn17, #saveBtn18, #saveBtn19
 {
   color:ForestGreen;
   visibility:hidden;
 }
 
-#cancelbtn0, #cancelbtn1, #cancelbtn2, #cancelbtn3, #cancelbtn4, #cancelbtn5,
-#cancelbtn6, #cancelbtn7, #cancelbtn8, #cancelbtn9, #cancelbtn10, #cancelbtn11,
-#cancelbtn12, #cancelbtn13, #cancelbtn14, #cancelbtn15, #cancelbtn16,
-#cancelbtn17, #cancelbtn18, #cancelbtn19{
+#cancelBtn0, #cancelBtn1, #cancelBtn2, #cancelBtn3, #cancelBtn4, #cancelBtn5,
+#cancelBtn6, #cancelBtn7, #cancelBtn8, #cancelBtn9, #cancelBtn10, #cancelBtn11,
+#cancelBtn12, #cancelBtn13, #cancelBtn14, #cancelBtn15, #cancelBtn16,
+#cancelBtn17, #cancelBtn18, #cancelBtn19{
   color:Crimson;
   visibility:hidden;
 }

@@ -24,10 +24,9 @@
   </header>
   <main class="mdl-layout__content">
     <div class="page-content">
-      <div id="pagenum"></div>
-      <label>Select page: </label><select id="selectPage"></select>
-      <button class='mdl-button mdl-js-button mdl-button--icon' id="searchBtn" onclick="goSelectedPage()"><i class="material-icons">search</i></button><br>
-      <label>Search by ID: </label><input type="text" id="findId" name="ID">
+      <div id="pageNum"></div>
+      <label>Select page: </label><select id="selectPage" onchange="goSelectedPage()"></select>
+      <label id="idLabel">Search by ID: </label><input type="text" id="findId" name="ID">
       <button class='mdl-button mdl-js-button mdl-button--icon' id="searchBtn" onclick="findUser()"><i class="material-icons">search</i></button><br><br>
       <table class="mdl-data-table mdl-js-data-table">
         <thead>
@@ -37,29 +36,30 @@
             <th class="mdl-data-table__cell--non-numeric">Email</th>
             <th class="mdl-data-table__cell--non-numeric">Gender</th>
             <th class="mdl-data-table__cell--non-numeric">Status</th>
+            <th></th><th></th><th></th><th></th>
           </tr>
           <tr>
             <td></td>
-            <td contenteditable="true" id="nameinput"></td>
-            <td contenteditable="true" id="emailinput"></td>
+            <td contenteditable="true" id="nameInput"></td>
+            <td contenteditable="true" id="emailInput"></td>
             <td class="dropdown">
-              <select id="genderlist" >
+              <select id="genderList" >
                   <option value="male">male</option>
                   <option value="female">female</option>
               </select>
            </td>
            <td class="dropdown">
-             <select id="statuslist" >
+             <select id="statusList" >
                  <option value="active">active</option>
                  <option value="inactive">inactive</option>
              </select>
           </td>
           <td>
-            <button class='mdl-button mdl-js-button mdl-button--icon' id="createbtn" onclick="createUser()"><i class='material-icons'>add_circle_outline</i></button>
+            <button class='mdl-button mdl-js-button mdl-button--icon' id="createBtn" onclick="createUser()"><i class='material-icons'>add_circle_outline</i></button>
           </td><td></td><td></td><td></td>
         </tr>
         </thead>
-        <tbody id="displaytable">
+        <tbody id="displayTable">
         </tbody>
       </table>
       </div>
