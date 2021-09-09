@@ -19,7 +19,7 @@ function handleHttp(action, url, value, resolve){
       }
     }
     // error
-    else if(this.status >= 400){
+    else if(this.status >= 400 && this.readyState == 4){
       alert("Error code: " + this.status + "\nMessage: " + this.statusText);
       }
     };
@@ -62,8 +62,13 @@ function reload(){
       // generate select page number list
       if(maxPage!= temp){
         pageOption = "";
-        for(let i=1; i<maxPage+1; i++){
-          pageOption += "<option value='" + i + "'>" + i + "</option>";
+        for(let i=0; i<maxPage+1; i++){
+          if(i == 0){
+            pageOption += "<option value='default'></option>";
+          }
+          else{
+            pageOption += "<option value='" + i + "'>" + i + "</option>";
+          }
         }
         document.getElementById("selectPage").innerHTML = pageOption;
       }
@@ -157,7 +162,7 @@ function saveEdit(currRow, currUserId){
   else{
     // perform PUT request by calling handleHttp function
     handleHttp('PUT', URL + '/' + currUserId, '{"name":"'+name+'","gender":"'+gender+'","email":"'+email+'","status":"'+status+'"}', function(){
-      alert("Edited successfully\nId: " + id + "\nName: " + name + "\nEmail: " + email + "\nGender: " + gender + "\nStatus: " + status);
+      alert("Edited successfully");
     });
   }
   // resume refreshing
@@ -169,8 +174,6 @@ function goNextPage(){
   // ensure does not exceed max page limit
   if(page < maxPage){
     page = page + 1;
-    // resume refreshing
-    livedata = setInterval(reload,2000);
   }
 }
 
@@ -179,8 +182,6 @@ function goPrevPage(){
   // ensure page number is not less than 1
   if(page > 1){
     page -= 1;
-    // resume refreshing
-    livedata = setInterval(reload,2000);
   }
 }
 
@@ -190,8 +191,6 @@ function goSelectedPage(){
   page = parseInt(document.getElementById("selectPage").value);
   // reset option list to default value
   document.getElementById("selectPage").selectedIndex = 0;
-  // resume refreshing
-  livedata = setInterval(reload,2000);
 }
 
 // identify specific user based on id inputted
@@ -203,17 +202,24 @@ function findUser(){
   // obtain user id in input field
   let idnum = document.getElementById("findId").value;
 
-  // perform GET request to determine this id's user
-  handleHttp('GET', URL + '/' + idnum, null, function(datalist){
-    document.getElementById("displayTable").innerHTML= " ";
-    document.getElementById("currentPage").innerHTML= "Page "+ page
+  if(idnum === ""){
+    alert("No user Id is provided");
+  }
+  else{
+    // perform GET request to determine this id's user
+    handleHttp('GET', URL + '/' + idnum, null, function(datalist){
+      document.getElementById("displayTable").innerHTML= " ";
+      document.getElementById("currentPage").innerHTML= "Page "+ page
 
-    if(datalist.data != null){
-      document.getElementById("displayTable").innerHTML = "<tr id='row" + 0 + "' contenteditable=\"false\"><td id='id" + 0 + "'>" + datalist.data.id +
-      "</td><td id='name" + 0 + "'>" + datalist.data.name + "</td><td id='email" + e + "'>" + datalist.data.email + "</td><td id='gender" + 0 + "'>" +
-      datalist.data.gender + "</td><td id='status" + 0 + "'>" + datalist.data.status + "<td></tr>";
+      if(datalist.data != null){
+        document.getElementById("displayTable").innerHTML = "<tr id='row" + 0 + "' contenteditable=\"false\"><td id='id" + 0 + "'>" + datalist.data.id +
+        "</td><td id='name" + 0 + "'>" + datalist.data.name + "</td><td id='email" + e + "'>" + datalist.data.email + "</td><td id='gender" + 0 + "'>" +
+        datalist.data.gender + "</td><td id='status" + 0 + "'>" + datalist.data.status + "<td></tr>";
+      }});
       document.getElementById("findId").value = "";
-    }});
+  }
+    // resume refreshing
+    livedata = setInterval(reload,10000);
 }
 
 // display navigate button when page loads

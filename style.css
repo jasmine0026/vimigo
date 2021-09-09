@@ -5,11 +5,15 @@
 }
 
 .mdl-layout__header-row{
-  background-color:SlateBlue;
+  background-color:#612da6;
 }
 
 #displayTable td{
   text-align: left;
+}
+
+tr:hover {
+    background-color: LemonChiffon;
 }
 
 th{
@@ -24,11 +28,7 @@ th{
   width:90px;
 }
 
-#createBtn{
-  color:Tomato;
-}
-
-#searchBtn{
+#createBtn, #searchBtn{
   color:Tomato;
 }
 
@@ -58,7 +58,8 @@ th{
 #cancelBtn0, #cancelBtn1, #cancelBtn2, #cancelBtn3, #cancelBtn4, #cancelBtn5,
 #cancelBtn6, #cancelBtn7, #cancelBtn8, #cancelBtn9, #cancelBtn10, #cancelBtn11,
 #cancelBtn12, #cancelBtn13, #cancelBtn14, #cancelBtn15, #cancelBtn16,
-#cancelBtn17, #cancelBtn18, #cancelBtn19{
+#cancelBtn17, #cancelBtn18, #cancelBtn19
+{
   color:Crimson;
   visibility:hidden;
 }
