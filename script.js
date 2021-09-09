@@ -12,20 +12,24 @@ function handleHttp(action, url, value, resolve){
   let request = new XMLHttpRequest();
 
   request.onreadystatechange = function(){
+    // success
     if(this.status >= 200 && this.status < 400 && this.readyState == 4){
       if(resolve){
         resolve(JSON.parse(this.response));
       }
     }
+    // error
     else if(this.status >= 400){
       alert("Error code: " + this.status + "\nMessage: " + this.statusText);
       }
     };
 
+  // set header request
   request.open(action,url);
   request.setRequestHeader("Content-type", "application/json");
   request.setRequestHeader("Authorization", "Bearer d65c1eb53080a7e1585ec8734451807790d83c28532025a568ef7c9d03bb29d8");
 
+  // send request
   if(value){
     request.send(value);
   }
@@ -37,20 +41,25 @@ function handleHttp(action, url, value, resolve){
 // retrieve user data
 function reload(){
   let thisUrl = "";
+  // other than 1
   if(page != 1){
     thisUrl = 'https://gorest.co.in/public/v1/users?page=' + page;
   }
+  // first loaded(default)
   else {
     thisUrl = 'https://gorest.co.in/public/v1/users?';
   }
 
+  // call handlehttp function to send GET request
   handleHttp('GET', thisUrl, null, function(datalist){
     document.getElementById("displayTable").innerHTML= " "
     document.getElementById("currentPage").innerHTML= "Page "+ page
 
+    // show all data obtained in table
     if(datalist.meta != null){
       listAll(datalist);
       maxPage = datalist.meta.pagination.pages;
+      // generate select page number list
       if(maxPage!= temp){
         pageOption = "";
         for(let i=1; i<maxPage+1; i++){
@@ -81,11 +90,13 @@ function listAll(datalist){
 
 // create new user
 function createUser(){
+  //obtain input field values
   let name = document.getElementById("nameInput").innerText;
   let email = document.getElementById("emailInput").innerText;
   let gender = document.getElementById("genderList").value;
   let status = document.getElementById("statusList").value;
 
+  // call handlehttp function to perform POST request
   handleHttp('POST', URL, '{"name":"'+name+'","gender":"'+gender+'","email":"'+email+'","status":"'+status+'"}', function(){
     alert("New user added successfully");
     // reset input field
@@ -129,6 +140,7 @@ function saveEdit(currRow, currUserId){
   document.getElementById("saveBtn"+currRow).style.visibility = "hidden"
   document.getElementById("cancelBtn"+currRow).style.visibility = "hidden"
 
+  // obtain data
   let id = document.getElementById("id"+currRow).innerText;
   let name = document.getElementById("name"+currRow).innerText;
   let email = document.getElementById("email"+currRow).innerText;
@@ -143,6 +155,7 @@ function saveEdit(currRow, currUserId){
     alert("Please enter either \"active\" or \"inactive\"");
   }
   else{
+    // perform PUT request by calling handleHttp function
     handleHttp('PUT', URL + '/' + currUserId, '{"name":"'+name+'","gender":"'+gender+'","email":"'+email+'","status":"'+status+'"}', function(){
       alert("Edited successfully\nId: " + id + "\nName: " + name + "\nEmail: " + email + "\nGender: " + gender + "\nStatus: " + status);
     });
@@ -153,6 +166,7 @@ function saveEdit(currRow, currUserId){
 
 // navigate to next page
 function goNextPage(){
+  // ensure does not exceed max page limit
   if(page < maxPage){
     page = page + 1;
     // resume refreshing
@@ -162,6 +176,7 @@ function goNextPage(){
 
 // navigate to previous page
 function goPrevPage(){
+  // ensure page number is not less than 1
   if(page > 1){
     page -= 1;
     // resume refreshing
@@ -169,9 +184,11 @@ function goPrevPage(){
   }
 }
 
-// navigate to selected page
+// navigate to selected page through drop down list
 function goSelectedPage(){
+  //convert string to integer
   page = parseInt(document.getElementById("selectPage").value);
+  // reset option list to default value
   document.getElementById("selectPage").selectedIndex = 0;
   // resume refreshing
   livedata = setInterval(reload,2000);
@@ -179,11 +196,14 @@ function goSelectedPage(){
 
 // identify specific user based on id inputted
 function findUser(){
+  // pause reloading
   clearInterval(livedata);
   livedata = null;
 
+  // obtain user id in input field
   let idnum = document.getElementById("findId").value;
 
+  // perform GET request to determine this id's user
   handleHttp('GET', URL + '/' + idnum, null, function(datalist){
     document.getElementById("displayTable").innerHTML= " ";
     document.getElementById("currentPage").innerHTML= "Page "+ page
